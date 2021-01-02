@@ -1,0 +1,23 @@
+{
+    "ManifestVersion": 2,
+    "AuthorName": "NekuSoul",
+    "Name": "NekuSoul-ShopsOnly",
+    "DisplayName": "ShopsOnly",
+    "Version": "0.1.0",
+    "Licence": "MIT",
+    "WebsiteURL": "https://github.com/NekuSoul/ShopsOnly",
+    "Description": "Replaces chests with shops.",
+    "GameVersion": "N/A",
+    "Dependencies": [
+        "tristanmcpherson-R2API-2.5.14"
+    ],
+    "OptionalDependencies": [],
+    "Incompatibilities": [],
+    "NetworkMode": "both",
+    "PackageType": "mod",
+    "InstallMode": "managed",
+    "Loaders": [
+        "bepinex"
+    ],
+    "ExtraData": {}
+}
