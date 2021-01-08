@@ -2,12 +2,13 @@
 using System.Reflection;
 using BepInEx;
 using RoR2;
+using UnityEngine;
 
 namespace NekuSoul.ShopsOnly
 {
 	[BepInDependency("com.bepis.r2api")]
 
-	[BepInPlugin("de.NekuSoul.ShopsOnly", "ShopsOnly", "0.1.0")]
+	[BepInPlugin("de.NekuSoul.ShopsOnly", "ShopsOnly", "0.2.0")]
 	public class ShopsOnly : BaseUnityPlugin
 	{
 		private static readonly string[] replacedChoices = { "Chest1", "Chest2", "CategoryChestDamage", "CategoryChestHealing", "CategoryChestUtility" };
@@ -31,11 +32,31 @@ namespace NekuSoul.ShopsOnly
 			var val = rng.RangeFloat(0, 1);
 
 			if (val > 0.975f)
+			{
 				self.itemTier = ItemTier.Tier3;
+				self.baseCost = 400;
+			}
 			else if (val > 0.8f)
+			{
 				self.itemTier = ItemTier.Tier2;
+				self.baseCost = 50;
+			}
 			else
+			{
 				self.itemTier = ItemTier.Tier1;
+				self.baseCost = 25;
+			}
+
+			self.Networkcost = Run.instance.GetDifficultyScaledCost(self.baseCost);
+
+			var terminalGameObjects = (GameObject[])typeof(MultiShopController).GetField("terminalGameObjects", BindingFlags.Instance | BindingFlags.NonPublic)?.GetValue(self);
+
+			if (terminalGameObjects != null)
+				foreach (var terminalGameObject in terminalGameObjects)
+				{
+					var purchaseInteraction = terminalGameObject.GetComponent<PurchaseInteraction>();
+					purchaseInteraction.Networkcost = self.Networkcost;
+				}
 
 			orig(self);
 		}
@@ -73,23 +94,6 @@ namespace NekuSoul.ShopsOnly
 			}
 
 			return weightedSelection;
-		}
-
-		private void PrintLootTable(WeightedSelection<DirectorCard> weightedSelection)
-		{
-			Logger.LogMessage("");
-			Logger.LogMessage("=========");
-			Logger.LogMessage("LootTable");
-			Logger.LogMessage("=========");
-			Logger.LogMessage("");
-
-			for (var i = 0; i < weightedSelection.Count; i++)
-			{
-				var choiceInfo = weightedSelection.GetChoice(i);
-
-				Logger.LogMessage($"[{choiceInfo.value.spawnCard.prefab.name}] {choiceInfo.weight}");
-			}
-			Logger.LogMessage("");
 		}
 	}
 }
