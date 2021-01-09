@@ -8,7 +8,7 @@ namespace NekuSoul.ShopsOnly
 {
 	[BepInDependency("com.bepis.r2api")]
 
-	[BepInPlugin("de.NekuSoul.ShopsOnly", "ShopsOnly", "0.2.0")]
+	[BepInPlugin("de.NekuSoul.ShopsOnly", "ShopsOnly", "0.3.0")]
 	public class ShopsOnly : BaseUnityPlugin
 	{
 		private static readonly string[] replacedChoices = { "Chest1", "Chest2", "CategoryChestDamage", "CategoryChestHealing", "CategoryChestUtility" };

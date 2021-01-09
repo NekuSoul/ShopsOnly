@@ -1,6 +1,6 @@
 {
     "name": "ShopsOnly",
-    "version_number": "0.1.0",
+    "version_number": "0.3.0",
     "website_url": "https://github.com/NekuSoul/ShopsOnly",
     "description": "Replaces common chests with shops.",
     "dependencies": [
