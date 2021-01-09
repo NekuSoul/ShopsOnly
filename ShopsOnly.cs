@@ -22,7 +22,10 @@ namespace NekuSoul.ShopsOnly
 		private void MultiShopController_CreateTerminals(On.RoR2.MultiShopController.orig_CreateTerminals orig, MultiShopController self)
 		{
 			if (self.doEquipmentInstead)
+			{
+				orig(self);
 				return;
+			}
 
 			var rng = (Xoroshiro128Plus)typeof(MultiShopController).GetField("rng", BindingFlags.Instance | BindingFlags.NonPublic)?.GetValue(self);
 

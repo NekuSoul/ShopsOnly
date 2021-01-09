@@ -6,6 +6,10 @@ This is a mod for the game Risk Of Rain 2 that replaces small, large and categor
 
 ## Changelog
 
+### v0.3.0
+
+* Stop equipment shops from being empty.
+
 ### v0.2.0
 
 * Shops now cost now the same as their chest counterpart.
