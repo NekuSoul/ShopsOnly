@@ -1,8 +1,10 @@
 {
     "name": "ShopsOnly",
-    "version_number": "0.3.0",
+    "version_number": "0.4.0",
     "website_url": "https://github.com/NekuSoul/ShopsOnly",
-    "description": "Replaces common chests with shops.",
+    "description": "Artifact that replaces regular chests with shops.",
     "dependencies": [
+        "bbepis-BepInExPack-5.3.1",
+        "tristanmcpherson-R2API-2.5.14"
     ]
 }
