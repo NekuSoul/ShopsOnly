@@ -9,7 +9,7 @@ using UnityEngine;
 namespace NekuSoul.ShopsOnly
 {
 	[BepInDependency("com.bepis.r2api")]
-	[BepInPlugin("de.NekuSoul.ShopsOnly", "ShopsOnly", "0.4.0")]
+	[BepInPlugin("de.NekuSoul.ShopsOnly", "ShopsOnly", "0.4.1")]
 	[R2APISubmoduleDependency("LoadoutAPI", "ResourcesAPI")]
 	public class ShopsOnly : BaseUnityPlugin
 	{

@@ -6,13 +6,13 @@ This is a mod for the game Risk Of Rain 2 that that adds an artifact that replac
 
 ## Changelog
 
+### v0.4.1
+
+* Fix typo in changelog.
+
 ### v0.4.0
 
 * Converted mod into an an artifact.
-
-### v0.3.0
-
-* Stop equipment shops from being empty.
 
 ### v0.3.0
 
