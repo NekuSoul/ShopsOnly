@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Linq;
 using System.Reflection;
 using BepInEx;
@@ -25,11 +25,23 @@ namespace NekuSoul.ShopsOnly
 			On.RoR2.MultiShopController.CreateTerminals += MultiShopController_CreateTerminals;
 			On.RoR2.SceneDirector.GenerateInteractableCardSelection += SceneDirector_GenerateInteractableCardSelection;
 
-			_artifact.nameToken = "Artifact of Multishop Terminals";
+			_artifact.nameToken = "Artifact of Options";
 			_artifact.descriptionToken = "Regular chests are replaced with Multishop Terminals.";
 			_artifact.smallIconDeselectedSprite = _disabledTexture;
 			_artifact.smallIconSelectedSprite = _enabledTexture;
-			ArtifactCatalog.getAdditionalEntries += list => list.Add(_artifact);
+			On.RoR2.ContentManager.SetContentPacks += ContentManager_SetContentPacks;
+		}
+
+		private void ContentManager_SetContentPacks(On.RoR2.ContentManager.orig_SetContentPacks orig, System.Collections.Generic.List<ContentPack> newContentPacks)
+		{
+			var pack = new ContentPack
+			{
+				artifactDefs = new[] {_artifact}
+			};
+
+			newContentPacks.Add(pack);
+
+			orig(newContentPacks);
 		}
 
 		private void MultiShopController_CreateTerminals(On.RoR2.MultiShopController.orig_CreateTerminals orig, MultiShopController self)
