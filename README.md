@@ -6,6 +6,12 @@ This is a mod for the game Risk Of Rain 2 that that adds an artifact that replac
 
 ## Changelog
 
+### v1.0.0
+
+* Compatibility with R2API 3.0.11
+* Rename artifact to Artifact of Options.
+* Slightly tweak artifact icon.
+
 ### v0.4.1
 
 * Fix typo in changelog.

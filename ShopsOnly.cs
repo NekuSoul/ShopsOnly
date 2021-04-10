@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Linq;
 using System.Reflection;
 using BepInEx;
@@ -9,7 +9,7 @@ using UnityEngine;
 namespace NekuSoul.ShopsOnly
 {
 	[BepInDependency("com.bepis.r2api")]
-	[BepInPlugin("de.NekuSoul.ShopsOnly", "ShopsOnly", "0.4.1")]
+	[BepInPlugin("de.NekuSoul.ShopsOnly", "ShopsOnly", "1.0.0")]
 	[R2APISubmoduleDependency("LoadoutAPI", "ResourcesAPI")]
 	public class ShopsOnly : BaseUnityPlugin
 	{
