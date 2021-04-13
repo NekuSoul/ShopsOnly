@@ -1,7 +1,9 @@
-﻿using System;
+using System;
 using System.Linq;
 using System.Reflection;
 using BepInEx;
+using Nekusoul.ShopsOnly;
+using RoR2.ContentManagement;
 using R2API.Utils;
 using RoR2;
 using UnityEngine;
@@ -15,38 +17,24 @@ namespace NekuSoul.ShopsOnly
 	{
 		private static readonly string[] ReplacedChoices = { "Chest1", "Chest2", "CategoryChestDamage", "CategoryChestHealing", "CategoryChestUtility" };
 
-		private readonly ArtifactDef _artifact = ScriptableObject.CreateInstance<ArtifactDef>();
-
-		private readonly Sprite _enabledTexture = LoadSprite(Nekusoul.ShopsOnly.Properties.Resources.enabled);
-		private readonly Sprite _disabledTexture = LoadSprite(Nekusoul.ShopsOnly.Properties.Resources.disabled);
+		private readonly ContentPackProvider _content = new ContentPackProvider();
 
 		public void Awake()
 		{
 			On.RoR2.MultiShopController.CreateTerminals += MultiShopController_CreateTerminals;
 			On.RoR2.SceneDirector.GenerateInteractableCardSelection += SceneDirector_GenerateInteractableCardSelection;
 
-			_artifact.nameToken = "Artifact of Options";
-			_artifact.descriptionToken = "Regular chests are replaced with Multishop Terminals.";
-			_artifact.smallIconDeselectedSprite = _disabledTexture;
-			_artifact.smallIconSelectedSprite = _enabledTexture;
-			On.RoR2.ContentManager.SetContentPacks += ContentManager_SetContentPacks;
+			ContentManager.collectContentPackProviders += ContentManager_collectContentPackProviders;
 		}
 
-		private void ContentManager_SetContentPacks(On.RoR2.ContentManager.orig_SetContentPacks orig, System.Collections.Generic.List<ContentPack> newContentPacks)
+		private void ContentManager_collectContentPackProviders(ContentManager.AddContentPackProviderDelegate addContentPackProvider)
 		{
-			var pack = new ContentPack
-			{
-				artifactDefs = new[] {_artifact}
-			};
-
-			newContentPacks.Add(pack);
-
-			orig(newContentPacks);
+			addContentPackProvider(_content);
 		}
 
 		private void MultiShopController_CreateTerminals(On.RoR2.MultiShopController.orig_CreateTerminals orig, MultiShopController self)
 		{
-			if (!RunArtifactManager.instance.IsArtifactEnabled(_artifact))
+			if (!RunArtifactManager.instance.IsArtifactEnabled(_content.Artifact))
 			{
 				orig(self);
 				return;
@@ -100,7 +88,7 @@ namespace NekuSoul.ShopsOnly
 
 		private WeightedSelection<DirectorCard> SceneDirector_GenerateInteractableCardSelection(On.RoR2.SceneDirector.orig_GenerateInteractableCardSelection orig, SceneDirector self)
 		{
-			if (!RunArtifactManager.instance.IsArtifactEnabled(_artifact))
+			if (!RunArtifactManager.instance.IsArtifactEnabled(_content.Artifact))
 			{
 				return orig(self);
 			}
@@ -136,18 +124,6 @@ namespace NekuSoul.ShopsOnly
 			}
 
 			return weightedSelection;
-		}
-
-		static Sprite LoadSprite(byte[] resourceBytes)
-		{
-			//Check to make sure that the byte array supplied is not null, and throw an appropriate exception if they are.
-			if (resourceBytes == null) throw new ArgumentNullException(nameof(resourceBytes));
-
-			//Create a temporary texture, then load the texture onto it.
-			var tempTex = new Texture2D(128, 128, TextureFormat.RGBA32, false);
-			tempTex.LoadImage(resourceBytes, false);
-
-			return Sprite.Create(tempTex, new Rect(0, 0, tempTex.width, tempTex.height), new Vector2(0.5f, 0.5f)); ;
 		}
 	}
 }
