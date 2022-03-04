@@ -1,6 +1,6 @@
 {
   "name": "ShopsOnly",
-  "version_number": "3.0.0",
+  "version_number": "3.0.1",
   "website_url": "https://github.com/NekuSoul/ShopsOnly",
   "description": "Artifact that replaces regular chests with shops.",
   "dependencies": [
