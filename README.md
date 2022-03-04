@@ -6,6 +6,10 @@ This is a mod for the game Risk Of Rain 2 that that adds an artifact that replac
 
 ## Changelog
 
+### v3.0.1
+
+* Compatibility with Survivors of the Void for real this time
+
 ### v3.0.0
 
 * Compatibility with Survivors of the Void

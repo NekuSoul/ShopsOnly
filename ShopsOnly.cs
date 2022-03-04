@@ -8,8 +8,7 @@ using UnityEngine;
 
 namespace NekuSoul.ShopsOnly
 {
-    [BepInDependency("com.bepis.r2api")]
-    [BepInPlugin("de.NekuSoul.ShopsOnly", "ShopsOnly", "3.0.0")]
+    [BepInPlugin("de.NekuSoul.ShopsOnly", "ShopsOnly", "3.0.1")]
     public class ShopsOnly : BaseUnityPlugin
     {
         private static readonly string[] ReplacedChoices = { "Chest1", "Chest2", "CategoryChestDamage", "CategoryChestHealing", "CategoryChestUtility" };
