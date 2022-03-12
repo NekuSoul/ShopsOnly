@@ -48,7 +48,7 @@ namespace NekuSoul.ShopsOnly
                 orig(self);
                 return;
             }
-
+            
             var val = rng.RangeFloat(0, 1);
 
             if (val > 0.975f)
@@ -68,17 +68,22 @@ namespace NekuSoul.ShopsOnly
             }
 
             self.Networkcost = Run.instance.GetDifficultyScaledCost(self.baseCost);
-
-            var terminalGameObjects = (GameObject[])typeof(MultiShopController).GetField("terminalGameObjects", BindingFlags.Instance | BindingFlags.NonPublic)?.GetValue(self);
-
-            if (terminalGameObjects != null)
-                foreach (var terminalGameObject in terminalGameObjects)
-                {
-                    var purchaseInteraction = terminalGameObject.GetComponent<PurchaseInteraction>();
-                    purchaseInteraction.Networkcost = self.Networkcost;
-                }
-
+            
             orig(self);
+
+            var terminalGameObjects = (GameObject[])typeof(MultiShopController)
+                .GetField("_terminalGameObjects", BindingFlags.Instance | BindingFlags.NonPublic).GetValue(self);
+
+            foreach (var terminalGameObject in terminalGameObjects)
+            {
+                var shopTerminalBehavior = terminalGameObject.GetComponent<ShopTerminalBehavior>();
+                shopTerminalBehavior.itemTier = self.itemTier;
+                shopTerminalBehavior.dropTable = null;
+                
+                var purchaseInteraction = terminalGameObject.GetComponent<PurchaseInteraction>();
+                purchaseInteraction.Networkcost = self.Networkcost;
+
+            }
         }
 
         private WeightedSelection<DirectorCard> SceneDirector_GenerateInteractableCardSelection(On.RoR2.SceneDirector.orig_GenerateInteractableCardSelection orig, SceneDirector self)
