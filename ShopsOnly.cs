@@ -1,4 +1,4 @@
-﻿using BepInEx;
+using BepInEx;
 using Nekusoul.ShopsOnly;
 using RoR2;
 using RoR2.ContentManagement;
@@ -11,7 +11,7 @@ namespace NekuSoul.ShopsOnly
     [BepInPlugin("de.NekuSoul.ShopsOnly", "ShopsOnly", "3.0.1")]
     public class ShopsOnly : BaseUnityPlugin
     {
-        private static readonly string[] ReplacedChoices = { "Chest1", "Chest2", "CategoryChestDamage", "CategoryChestHealing", "CategoryChestUtility" };
+        private static readonly string[] ReplacedChoices = { "Chest1", "Chest2", "CategoryChestDamage", "CategoryChestHealing", "CategoryChestUtility", "TripleShopLarge" };
 
         private readonly ContentPackProvider _content = new ContentPackProvider();
 
