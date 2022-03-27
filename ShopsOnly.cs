@@ -8,7 +8,7 @@ using UnityEngine;
 
 namespace NekuSoul.ShopsOnly
 {
-    [BepInPlugin("de.NekuSoul.ShopsOnly", "ShopsOnly", "3.0.2")]
+    [BepInPlugin("de.NekuSoul.ShopsOnly", "ShopsOnly", "3.0.3")]
     public class ShopsOnly : BaseUnityPlugin
     {
         private static readonly string[] ReplacedChoices =
@@ -58,7 +58,7 @@ namespace NekuSoul.ShopsOnly
                 orig(self);
                 return;
             }
-            
+
             var val = rng.RangeFloat(0, 1);
 
             if (val > 0.975f)
@@ -78,7 +78,7 @@ namespace NekuSoul.ShopsOnly
             }
 
             self.Networkcost = Run.instance.GetDifficultyScaledCost(self.baseCost);
-            
+
             orig(self);
 
             var terminalGameObjects = (GameObject[])typeof(MultiShopController)
@@ -89,7 +89,7 @@ namespace NekuSoul.ShopsOnly
                 var shopTerminalBehavior = terminalGameObject.GetComponent<ShopTerminalBehavior>();
                 shopTerminalBehavior.itemTier = self.itemTier;
                 shopTerminalBehavior.dropTable = null;
-                
+
                 var purchaseInteraction = terminalGameObject.GetComponent<PurchaseInteraction>();
                 purchaseInteraction.Networkcost = self.Networkcost;
 
