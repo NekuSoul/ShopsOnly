@@ -11,7 +11,17 @@ namespace NekuSoul.ShopsOnly
     [BepInPlugin("de.NekuSoul.ShopsOnly", "ShopsOnly", "3.0.2")]
     public class ShopsOnly : BaseUnityPlugin
     {
-        private static readonly string[] ReplacedChoices = { "Chest1", "Chest2", "CategoryChestDamage", "CategoryChestHealing", "CategoryChestUtility", "TripleShopLarge" };
+        private static readonly string[] ReplacedChoices =
+        {
+            "Chest1", 
+            "Chest2", 
+            "CategoryChestDamage",
+            "CategoryChestHealing", 
+            "CategoryChestUtility", 
+            "CategoryChest2Damage Variant",
+            "CategoryChest2Healing Variant",
+            "CategoryChest2Utility Variant"
+        };
 
         private readonly ContentPackProvider _content = new ContentPackProvider();
 
