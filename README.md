@@ -6,7 +6,7 @@ This is a mod for the game Risk Of Rain 2 that that adds an artifact that replac
 
 ## Changelog
 
-### v3.0.2
+### v3.0.3
 
 * Fix bug causing way too few shops spawning in environment 'Sky Meadow'.
 * Also replaces large category chests.
