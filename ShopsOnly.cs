@@ -1,3 +1,4 @@
+using System;
 using BepInEx;
 using Nekusoul.ShopsOnly;
 using RoR2;
@@ -13,31 +14,41 @@ namespace NekuSoul.ShopsOnly
     {
         private static readonly string[] ReplacedChoices =
         {
-            "Chest1", 
-            "Chest2", 
+            "Chest1",
+            "Chest2",
             "CategoryChestDamage",
-            "CategoryChestHealing", 
-            "CategoryChestUtility", 
+            "CategoryChestHealing",
+            "CategoryChestUtility",
             "CategoryChest2Damage Variant",
             "CategoryChest2Healing Variant",
             "CategoryChest2Utility Variant"
         };
 
         private readonly ContentPackProvider _content = new ContentPackProvider();
+        private Type _multiShopController;
+        private FieldInfo _terminalGameObjectsField;
+        private PropertyInfo _networkCostProperty;
 
         public void Awake()
         {
+            _multiShopController = typeof(MultiShopController);
+            _terminalGameObjectsField =
+                _multiShopController.GetField("terminalGameObjects", BindingFlags.Instance | BindingFlags.NonPublic);
+            _networkCostProperty =
+                _multiShopController.GetProperty("Networkcost", BindingFlags.Instance | BindingFlags.NonPublic);
             On.RoR2.MultiShopController.CreateTerminals += MultiShopController_CreateTerminals;
             On.RoR2.SceneDirector.GenerateInteractableCardSelection += SceneDirector_GenerateInteractableCardSelection;
             ContentManager.collectContentPackProviders += ContentManager_collectContentPackProviders;
         }
 
-        private void ContentManager_collectContentPackProviders(ContentManager.AddContentPackProviderDelegate addContentPackProvider)
+        private void ContentManager_collectContentPackProviders(
+            ContentManager.AddContentPackProviderDelegate addContentPackProvider)
         {
             addContentPackProvider(_content);
         }
 
-        private void MultiShopController_CreateTerminals(On.RoR2.MultiShopController.orig_CreateTerminals orig, MultiShopController self)
+        private void MultiShopController_CreateTerminals(On.RoR2.MultiShopController.orig_CreateTerminals orig,
+            MultiShopController self)
         {
             if (!RunArtifactManager.instance.IsArtifactEnabled(_content.Artifact))
             {
@@ -51,7 +62,8 @@ namespace NekuSoul.ShopsOnly
                 return;
             }
 
-            var rng = (Xoroshiro128Plus)typeof(MultiShopController).GetField("rng", BindingFlags.Instance | BindingFlags.NonPublic)?.GetValue(self);
+            var rng = (Xoroshiro128Plus)_multiShopController
+                .GetField("rng", BindingFlags.Instance | BindingFlags.NonPublic)?.GetValue(self);
 
             if (rng == null)
             {
@@ -77,12 +89,12 @@ namespace NekuSoul.ShopsOnly
                 self.baseCost = 25;
             }
 
-            self.Networkcost = Run.instance.GetDifficultyScaledCost(self.baseCost);
+            var newNetworkCost = Run.instance.GetDifficultyScaledCost(self.baseCost);
+            _networkCostProperty.SetValue(self, newNetworkCost);
 
             orig(self);
 
-            var terminalGameObjects = (GameObject[])typeof(MultiShopController)
-                .GetField("_terminalGameObjects", BindingFlags.Instance | BindingFlags.NonPublic).GetValue(self);
+            var terminalGameObjects = (GameObject[])_terminalGameObjectsField.GetValue(self);
 
             foreach (var terminalGameObject in terminalGameObjects)
             {
@@ -91,12 +103,12 @@ namespace NekuSoul.ShopsOnly
                 shopTerminalBehavior.dropTable = null;
 
                 var purchaseInteraction = terminalGameObject.GetComponent<PurchaseInteraction>();
-                purchaseInteraction.Networkcost = self.Networkcost;
-
+                purchaseInteraction.Networkcost = newNetworkCost;
             }
         }
 
-        private WeightedSelection<DirectorCard> SceneDirector_GenerateInteractableCardSelection(On.RoR2.SceneDirector.orig_GenerateInteractableCardSelection orig, SceneDirector self)
+        private WeightedSelection<DirectorCard> SceneDirector_GenerateInteractableCardSelection(
+            On.RoR2.SceneDirector.orig_GenerateInteractableCardSelection orig, SceneDirector self)
         {
             if (!RunArtifactManager.instance.IsArtifactEnabled(_content.Artifact))
             {
